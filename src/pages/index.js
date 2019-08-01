@@ -1,9 +1,6 @@
 import React from 'react';
-import { Link } from 'gatsby';
 
 import Layout from '../components/layout';
-import Image from '../components/image';
-import SEO from '../components/seo';
 
 const IndexPage = ({ data }) => (
   <Layout>
@@ -13,12 +10,16 @@ const IndexPage = ({ data }) => (
 
 export const query = graphql`
   query {
-    redCameraRentals {
-      id
-      records {
-        fields {
-          Cost
+    allAirtableItem {
+      edges {
+        node {
+          id
           Name
+          Cost
+          Condition
+          Notes
+          Status
+          Quantity
         }
       }
     }

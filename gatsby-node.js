@@ -16,20 +16,28 @@ exports.sourceNodes = async ({
     { headers: { Authorization: `Bearer ${AIRTABLE_API_KEY}` } },
   );
 
-  const nodeContent = JSON.stringify(data);
-
-  const nodeMeta = {
-    id: createNodeId(`my-data-airtable`),
-    parent: null,
-    children: [],
-    internal: {
-      type: `redCameraRentals`,
-      mediaType: `text/html`,
-      content: nodeContent,
-      contentDigest: createContentDigest(data),
-    },
+  const processItem = item => {
+    const nodeId = createNodeId(`airtable-item-${item.id}`);
+    const nodeContent = JSON.stringify(item);
+    const nodeData = Object.assign(
+      {},
+      { id: item.id, createdTime: item.createdTime, ...item.fields },
+      {
+        id: nodeId,
+        parent: null,
+        children: [],
+        internal: {
+          type: `AirtableItem`,
+          content: nodeContent,
+          contentDigest: createContentDigest(item),
+        },
+      },
+    );
+    return nodeData;
   };
 
-  const node = Object.assign({}, data, nodeMeta);
-  createNode(node);
+  data.records.map(item => {
+    const node = processItem(item);
+    createNode(node);
+  });
 };
