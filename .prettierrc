@@ -1,0 +1,9 @@
+{
+	"printWidth": 80,
+	"parser": "flow",
+	"trailingComma": "all",
+	"bracketSpacing": true,
+	"jsxBracketSameLine": false,
+	"arrowParens": "avoid",
+	"singleQuote": true
+}
